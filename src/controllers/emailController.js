@@ -13,9 +13,10 @@ const emailController = async (req, res, next) => {
         `../templates/${emailTemplateName}Template.txt`
       );
     }
-    const emailBody = req?.body
-      ? req?.body
-      : await fs.readFile(filePath, "utf8");
+    const emailBody =
+      JSON.stringify(req?.body) !== "{}"
+        ? req?.body
+        : await fs.readFile(filePath, "utf8");
     const receiverMailIds = emailListString.split(",");
     const result = await sendEmail(receiverMailIds, emailSubject, emailBody);
     console.log("Email Sent Successfully");
